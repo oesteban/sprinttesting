@@ -1,8 +1,26 @@
+machine:
+  pre:
+    - sudo curl -L -o /usr/bin/docker 'https://s3-external-1.amazonaws.com/circle-downloads/docker-1.9.1-circleci'
+    - sudo chmod 0755 /usr/bin/docker
+  services:
+    - docker
+
 dependencies:
   override:
-    - pip install pytest
+    - docker build --rm=false -t oesteban/sprinttest:latest .
 
 test:
   override:
-    - pytest .
+    - docker run -ti --rm=false oesteban/sprinttest 6
 
+# deployment:
+#   production:
+#     tag: /.*/
+#     commands:
+#       - ? |
+#           if [[ -n "$DOCKER_PASS" ]]; then
+#               VERSION_EXTRA=$(echo ${CIRCLE_TAG} | cut -d '-' -f 2)
+#               docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+#               docker tag oesteban/test_inc oesteban/test_inc:$CIRCLE_TAG
+#               docker push oesteban/test_inc:$CIRCLE_TAG
+#           fi
