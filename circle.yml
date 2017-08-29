@@ -11,7 +11,7 @@ dependencies:
 
 test:
   override:
-    - docker run -ti --rm=false --entrypoint=pytest oesteban/sprinttest .
+    - docker run -ti --rm=false --entrypoint=pytest oesteban/sprinttest test_sprint.py
     - docker run -ti --rm=false oesteban/sprinttest 6
 
 
